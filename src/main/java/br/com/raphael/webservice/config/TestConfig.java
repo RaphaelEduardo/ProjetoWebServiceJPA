@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.raphael.webservice.entities.Order;
 import br.com.raphael.webservice.entities.User;
+import br.com.raphael.webservice.entities.enums.OrderStatus;
 import br.com.raphael.webservice.repositories.OrderRepository;
 import br.com.raphael.webservice.repositories.UserRepository;
 
@@ -31,9 +32,9 @@ public class TestConfig implements CommandLineRunner {
 		User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "1234567");
 	
 		//ISO 8601 - Padrão de hora UTC.
-		Order o1 = new Order(null, Instant.parse("2023-01-20T19:53:07Z"), u1); 
-		Order o2 = new Order(null, Instant.parse("2023-02-21T03:42:10Z"), u2); 
-		Order o3 = new Order(null, Instant.parse("2023-03-05T15:21:22Z"), u1); 
+		Order o1 = new Order(null, Instant.parse("2023-01-20T19:53:07Z"), OrderStatus.PAID, u1); 
+		Order o2 = new Order(null, Instant.parse("2023-02-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2); 
+		Order o3 = new Order(null, Instant.parse("2023-03-05T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1); 
 		
 		//Para salvar no DB
 		userRepository.saveAll(Arrays.asList(u1, u2));
