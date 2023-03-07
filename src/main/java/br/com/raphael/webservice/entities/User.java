@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,11 +27,10 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 
-	// Um para muitos, mapeado por client.
+	@JsonIgnore 
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 
-	// Por estar usando um framework tem de passar o construtor vazio.
 	public User() {
 	}
 
