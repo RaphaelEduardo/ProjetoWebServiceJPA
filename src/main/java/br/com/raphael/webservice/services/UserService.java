@@ -12,6 +12,7 @@ import br.com.raphael.webservice.entities.User;
 import br.com.raphael.webservice.repositories.UserRepository;
 import br.com.raphael.webservice.services.exceptions.DatabaseException;
 import br.com.raphael.webservice.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -49,11 +50,13 @@ public class UserService {
 
 	// atualizar um obj(User) no db
 	public User update(Long id, User obj) {
-		// instancia um objeto monitorado (so prepara sem efetuar nenhuma operacao)
-		User entity = repository.getReferenceById(id);
-		// operacao
-		updateData(entity, obj); // atualizar os dados de entity, baseado no que vai receber de obj
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id);
+			updateData(entity, obj); 
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	// atualiza os dados de entity, com base no que recebeu no obj.
