@@ -14,24 +14,41 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
-	
-	public List<User> findAll() {	
+
+	public List<User> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		//vai retornar o obj que estiver dentro do Optional.
+		// vai retornar o obj que estiver dentro do Optional.
 		return obj.get();
 	}
-	
-	//inserir um novo obj(User) no db
+
+	// inserir um novo obj(User) no db
 	public User insert(User obj) {
 		return repository.save(obj);
 	}
-	
-	//deletar um obj(User) no db
+
+	// deletar um obj(User) no db
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+
+	// atualizar um obj(User) no db
+	public User update(Long id, User obj) {
+		// instancia um objeto monitorado (so prepara sem efetuar nenhuma operacao)
+		User entity = repository.getReferenceById(id);
+		// operacao
+		updateData(entity, obj); // atualizar os dados de entity, baseado no que vai receber de obj
+		return repository.save(entity);
+	}
+
+	// atualiza os dados de entity, com base no que recebeu no obj.
+	private void updateData(User entity, User obj) {
+		// nem todos os dados podem ser atualizados (ex.: id, senha,...)
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
 	}
 }
