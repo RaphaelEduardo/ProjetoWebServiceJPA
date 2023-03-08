@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.raphael.webservice.entities.User;
 import br.com.raphael.webservice.repositories.UserRepository;
+import br.com.raphael.webservice.services.exceptions.DatabaseException;
 import br.com.raphael.webservice.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -33,7 +36,15 @@ public class UserService {
 
 	// deletar um obj(User) no db
 	public void delete(Long id) {
-		repository.deleteById(id);
+		//tratando manualmente as excecoes
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+		
 	}
 
 	// atualizar um obj(User) no db
