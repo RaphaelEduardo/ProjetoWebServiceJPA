@@ -66,5 +66,4 @@ public class UserResource {
 		// cod 200
 		return ResponseEntity.ok().body(obj);
 	}
-
 }

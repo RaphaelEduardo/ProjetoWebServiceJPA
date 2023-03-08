@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.raphael.webservice.entities.User;
 import br.com.raphael.webservice.repositories.UserRepository;
+import br.com.raphael.webservice.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,8 +22,8 @@ public class UserService {
 
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		// vai retornar o obj que estiver dentro do Optional.
-		return obj.get();
+		//vai tentar dar o get, se n conseguir vai lançar uma excecao
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	// inserir um novo obj(User) no db
