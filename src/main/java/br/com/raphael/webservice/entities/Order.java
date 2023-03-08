@@ -41,7 +41,6 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id")
 	private User client;
 
-	//no OrderItem tem o id e o id que tem o pedido
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 	
