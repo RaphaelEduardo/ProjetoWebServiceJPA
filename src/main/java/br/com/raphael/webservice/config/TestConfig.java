@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import br.com.raphael.webservice.entities.Category;
 import br.com.raphael.webservice.entities.Order;
 import br.com.raphael.webservice.entities.OrderItem;
+import br.com.raphael.webservice.entities.Payment;
 import br.com.raphael.webservice.entities.Product;
 import br.com.raphael.webservice.entities.User;
 import br.com.raphael.webservice.entities.enums.OrderStatus;
@@ -85,6 +86,16 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice()); 
 
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		
+		/*
+		 *  Para salvar um objeto dependente em uma relacao 1-para-1, 
+		 *  não chama o repository do proprio objeto e sim o repositorio 
+		 *  do objeto independete. 
+		 */
+		Payment pay1 = new Payment(null, Instant.parse("2023-01-20T21:53:07Z"), o1);
+		o1.setPayment(pay1);
+		
+		orderRepository.save(o1);
 	}
 
 }
